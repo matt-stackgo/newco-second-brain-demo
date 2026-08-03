@@ -1,0 +1,236 @@
+<title>Second brain — Sectorlight (sample)</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+:root{--beam:#0055FF;--beam-tint:#EFF4FF;--ink:#0F172A;--slate:#64748B;--border:#E2E8F0;--snow:#FAFAFA;--surface:#fff;--raised:#F8FAFC;--green:#16A34A;--green-tint:#F0FDF4;--warn:#FFF7ED;--warn-border:#FED7AA;--warn-ink:#92400e;--lock:#94A3B8;--rad:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--snow);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.55}
+h1,h2,h3,.pop{font-family:'Poppins',sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 20px 70px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;font-family:'Poppins'}
+.logo{width:24px;height:24px;border-radius:7px;background:var(--beam);display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+.brand .n{color:var(--slate);font-weight:500;font-size:13px}
+.eyebrow{font-family:'Poppins';font-weight:600;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--beam);margin-bottom:8px}
+.hidden{display:none}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--rad);box-shadow:0 20px 50px -34px rgba(15,23,42,.4);padding:30px 32px;margin-top:22px;max-width:560px}
+.card h2{font-size:22px;font-weight:800;margin-bottom:6px;letter-spacing:-.4px}
+.card .sub{color:var(--slate);font-size:14px;margin-bottom:20px}
+.field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:6px}
+.field .inp{border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14.5px;background:var(--raised);margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--beam);color:#fff;border:none;border-radius:10px;padding:13px 22px;font-family:'Poppins';font-weight:700;font-size:14.5px;cursor:pointer}
+.btn:hover{background:#0048d6}
+.mini{font-size:12px;color:var(--slate);margin-top:12px}
+/* brain */
+.bhead{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:22px 0 4px}
+.bhead h1{font-size:25px;font-weight:800;letter-spacing:-.5px}
+.covwrap{display:flex;align-items:center;gap:12px}
+.ring{position:relative;width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--beam) 0 42%,#dbe4f2 42% 100%);display:grid;place-items:center}
+.ring:before{content:'';position:absolute;width:46px;height:46px;border-radius:50%;background:var(--snow)}
+.ring b{position:relative;font-size:15px;font-weight:800;font-family:'Poppins'}
+.covwrap .t{font-size:12px;color:var(--slate);max-width:190px}.covwrap .t b{color:var(--ink)}
+.lede{color:var(--slate);font-size:14px;margin-bottom:14px;max-width:82ch}
+.scanline{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--beam);font-weight:700;margin-bottom:10px;min-height:20px}
+.dotpulse{width:9px;height:9px;border-radius:50%;background:var(--beam);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.explore{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+.netbox{position:relative}
+#net{height:540px;background:#fff;border:1px solid var(--border);border-radius:var(--rad)}
+.playhint{position:absolute;left:14px;top:14px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;font-family:'Poppins';border-radius:999px;padding:7px 13px;display:flex;align-items:center;gap:7px;box-shadow:0 6px 18px -6px rgba(15,23,42,.5);animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.side{display:flex;flex-direction:column;gap:14px}
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--rad);padding:18px 20px;min-height:230px}
+.panel .tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;border-radius:5px;padding:2px 8px;color:#fff;font-family:'Poppins'}
+.panel h3{font-size:18px;font-weight:800;margin:10px 0 8px;letter-spacing:-.3px}
+.panel p.lead{font-size:13.5px;color:#33415c}
+.panel ul{margin:10px 0 0 16px}.panel li{font-size:13px;color:#33415c;margin:4px 0}
+.panel .quote{border-left:3px solid var(--beam);padding:6px 0 6px 12px;font-style:italic;color:var(--ink);font-size:13.5px;margin-top:11px}
+.panel .src{font-size:11.5px;color:var(--slate);margin-top:12px;border-top:1px solid var(--border);padding-top:9px}
+.panel .hint{color:var(--slate);font-size:13.5px}
+.ask{background:#fff;border:1px solid var(--border);border-radius:var(--rad);padding:16px 18px}
+.ask .l{font-family:'Poppins';font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--beam);margin-bottom:9px}
+.searchbar{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--raised);font-size:13.5px}
+.answer{border-left:3px solid var(--beam);background:var(--beam-tint);border-radius:0 8px 8px 0;padding:11px 13px;font-size:13px;color:#26364f;margin-top:11px}
+.answer .src{font-size:11px;color:var(--slate);margin-top:7px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--slate)}
+.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:11px;height:11px;border-radius:50%}
+/* actions */
+.actions{margin-top:26px}
+.actwrap{background:#fff;border:1px solid var(--border);border-radius:var(--rad);overflow:hidden}
+.act{display:flex;gap:15px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:flex-start}
+.act:last-child{border-bottom:0}
+.act.top{background:var(--beam-tint)}
+.act .rank{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:'Poppins';font-weight:800;font-size:13px;flex:none}
+.act.top .rank{background:var(--beam)}
+.act .body{flex:1}
+.act .th{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.act .t{font-family:'Poppins';font-weight:700;font-size:15px}
+.act .tag{font-size:9.5px;font-weight:700;font-family:'Poppins';letter-spacing:.04em;border-radius:5px;padding:3px 8px}
+.tg-grow{background:var(--beam);color:#fff}.tg-up{background:var(--ink);color:#fff}.tg-int{background:var(--green-tint);color:var(--green)}.tg-fix{background:var(--warn);color:var(--warn-ink);border:1px solid var(--warn-border)}
+.act .why{font-size:13px;color:var(--slate);margin-top:4px}
+.act .why b{color:var(--ink)}
+.act .go{align-self:center;font-family:'Poppins';font-weight:700;font-size:12.5px;color:var(--beam);background:var(--beam-tint);border:none;border-radius:8px;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.foot{margin-top:20px;font-size:12px;color:var(--slate)}
+@media(max-width:820px){.explore{grid-template-columns:1fr}#net{height:420px}}
+</style>
+
+<div class="wrap">
+  <div class="brand"><span class="logo">N</span> [NewCo] <span class="n">· sample second brain · built from public sources</span></div>
+
+  <!-- STEP 1 -->
+  <div id="step1" class="card">
+    <div class="eyebrow">Step 1 of 1 you'll ever type</div>
+    <h2>Paste your website. We do the rest.</h2>
+    <div class="sub">No logins, no uploads. This is the whole first step your clients see.</div>
+    <div class="field"><label>Website</label><div class="inp">https://www.sectorlight.co</div></div>
+    <div class="field"><label>Company</label><div class="inp">Sectorlight</div></div>
+    <button class="btn" onclick="startScan()">Build my brain &rarr;</button>
+    <div class="mini">Prefilled for you, Paul &mdash; so you feel exactly what your clients would go through.</div>
+  </div>
+
+  <!-- STEP 2/3: BRAIN (builds live) -->
+  <div id="brain" class="hidden">
+    <div class="bhead">
+      <div><div class="eyebrow">Your second brain</div><h1>Sectorlight</h1></div>
+      <div class="covwrap"><div class="ring"><b>42%</b></div><div class="t"><b>Public got you here.</b> The other 58% is private &mdash; client outcomes, session notes, results.</div></div>
+    </div>
+    <div class="scanline" id="scanline"><span class="dotpulse"></span> <span id="scantxt">Fetching sectorlight.co…</span><span id="pagecount" style="margin-left:auto;color:var(--slate);font-weight:600;font-family:'Poppins';font-size:12px"></span></div>
+    <div id="pbarwrap" style="height:5px;background:#e6ecf5;border-radius:99px;overflow:hidden;margin-bottom:14px"><i id="pbar" style="display:block;height:100%;width:0;background:var(--beam);transition:width .6s ease"></i></div>
+    <p class="lede" id="lede" style="opacity:0">This is an <b>explorable brain</b>, not a dashboard &mdash; every dot is something we learned. Click any node to go deeper. Below, the highest-leverage things to do next.</p>
+    <div class="explore">
+      <div class="netbox">
+        <div id="net"></div>
+        <div class="playhint hidden" id="playhint">&#128072; Click any node</div>
+      </div>
+      <div class="side">
+        <div class="panel" id="panel"><span class="hint">Your brain is assembling&hellip; then <b>click any node</b> to explore it.</span></div>
+        <div class="ask">
+          <div class="l">Ask your brain</div>
+          <div class="searchbar"><span>&#128269;</span> What's our sharpest angle?</div>
+          <div class="answer">Your sharpest angle is <b>CEO loneliness</b> &mdash; "it's an incredibly lonely job." You're the only Chairperson + Mentor + Coach who has actually <i>been</i> a founder. Lead with the isolation of the top job, not "coaching" (a crowded, generic category).<div class="src">Grounded in: homepage, your positioning, the Naval quote. <b>Public only.</b></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:#0055FF"></i> Company</span><span><i style="background:#16A34A"></i> Offering</span>
+      <span><i style="background:#3b82f6"></i> Who you serve</span><span><i style="background:#7c3aed"></i> People</span>
+      <span><i style="background:#e6b877"></i> Fix on your site</span><span><i style="background:#cbd5e1"></i> Private (locked)</span>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions" id="actions" style="opacity:0">
+      <div class="eyebrow">Next best actions &mdash; highest leverage first</div>
+      <div class="actwrap">
+        <div class="act top"><div class="rank">1</div><div class="body"><div class="th"><span class="t">Add real client proof to your site</span><span class="tag tg-fix">FIX</span></div><div class="why"><b>Biggest leverage, lowest cost.</b> You sell trust, and there is zero proof on the site &mdash; no outcomes, testimonials or case studies. Even one anonymised result lifts conversion on every visit you already get.</div></div><button class="go">Do it</button></div>
+        <div class="act"><div class="rank">2</div><div class="body"><div class="th"><span class="t">Hire a BDR agent</span><span class="tag tg-grow">GROW</span></div><div class="why">You have no visible outbound engine. A BDR sources conversations with growth-stage CEOs from your ICP &mdash; the top of the funnel you're missing. Fills the pipeline the proof then converts.</div></div><button class="go">Hire &middot; $1,900/mo</button></div>
+        <div class="act"><div class="rank">3</div><div class="body"><div class="th"><span class="t">Make Paul the hero</span><span class="tag tg-fix">FIX</span></div><div class="why">The person <i>is</i> the product here, but Paul is nearly anonymous on-site &mdash; no full bio, credentials or track record. Surface him hard; it's the trust driver for a founder-to-founder service.</div></div><button class="go">Do it</button></div>
+        <div class="act"><div class="rank">4</div><div class="body"><div class="th"><span class="t">Upgrade to a private brain</span><span class="tag tg-up">UPGRADE</span></div><div class="why">Connect your real work &mdash; this is what turns your <i>client outcomes</i> into the proof from action #1, and makes every agent you hire smarter at once. 42% &rarr; complete.</div></div><button class="go">Start &middot; $20k</button></div>
+        <div class="act"><div class="rank">5</div><div class="body"><div class="th"><span class="t">Connect your CRM</span><span class="tag tg-int">INTEGRATE</span></div><div class="why">Feed the brain your real pipeline and relationships, so the BDR excludes existing contacts and everything is tracked. Read-only, revocable.</div></div><button class="go">Connect</button></div>
+        <div class="act"><div class="rank">6</div><div class="body"><div class="th"><span class="t">Point "About" at Paul, and sharpen one CTA</span><span class="tag tg-fix">FIX</span></div><div class="why">Your About link goes to /plans, and there are several undifferentiated "Contact us" buttons. Quick polish: About &rarr; your story, and one clear primary action.</div></div><button class="go">Do it</button></div>
+      </div>
+    </div>
+    <div class="foot">Sample built for Paul / Sectorlight from public sources only, 3 Aug 2026 &middot; styled in the Sonic system &middot; the brain assembles live and is fully explorable; actions are ranked by leverage to grow Sectorlight.</div>
+  </div>
+</div>
+
+<script>
+const D={
+ SL:{g:'Company',c:'#0055FF',t:'Sectorlight',lead:'Active Mentoring — experienced founder-mentors paired with current CEOs and founders in a structured advisory relationship.',facts:['Three roles in one: the knowledge of a Chairperson, the understanding of a Mentor, the empathy and tools of a Coach.','Australia-based (Sydney signals, +61).','Tactical delivery plus emotional support — an unusual, defensible combination.'],quote:'We invest time into owners.',s:'homepage, /active-mentoring'},
+ off:{g:'Offering',c:'#16A34A',t:'Active Mentoring',lead:'The core service — a structured advisory pairing, not ad-hoc coaching.',facts:['Tactical frameworks: strategy, OKRs, org design, product, capital raising, board papers, risk.','Accountability, objective feedback, and assumption-challenging.','Optional proprietary AI Values & Sentiment Review each year.'],s:'homepage, /active-mentoring'},
+ fw:{g:'Offering',c:'#16A34A',t:'Tactical frameworks',lead:'The concrete toolkit a mentee gets access to.',facts:['Strategy, OKRs, org design, product management.','Capital raising, board papers, decision frameworks, risk mitigation.','This is what separates you from a pure "listening" coach.'],s:'homepage'},
+ acc:{g:'Offering',c:'#16A34A',t:'Accountability & focus',lead:'Keeping the CEO on what actually matters.',facts:['Focus, follow-through, and honest challenge.','The value a busy, isolated founder can rarely get internally.'],s:'homepage'},
+ ai:{g:'Offering',c:'#16A34A',t:'AI Values & Sentiment Review',lead:'A proprietary, optional annual review — and a genuine differentiator that is badly under-sold.',facts:['Nobody else in founder-advisory pairs human mentoring with an AI sentiment layer.','Currently buried; it deserves its own page and headline.'],s:'homepage'},
+ exp:{g:'Offering',c:'#16A34A',t:'Expert Program',lead:'A second program — but a mystery to visitors.',facts:['Linked from the homepage with no explanation of what it is or who it is for.','Either explain it or remove it (see the fix nodes).'],s:'/expertprogram'},
+ pos:{g:'Positioning',c:'#3355e6',t:'Chairperson + Mentor + Coach',lead:'The three-in-one positioning — your clearest and most ownable idea.',facts:['Chairperson-level knowledge and involvement.','Mentor-level job and industry understanding.','Coach-level empathy and tools.'],s:'homepage'},
+ lone:{g:'Positioning',c:'#3355e6',t:'CEO loneliness (the wedge)',lead:'The emotional hook — and the sharpest thing you own.',facts:['You cannot confess to your board or your team; you carry it alone.','Far more distinctive than "coaching" or "advisory".','Lead with this, everywhere.'],quote:'It’s an incredibly lonely job.',s:'homepage (Naval quote)'},
+ invest:{g:'Positioning',c:'#3355e6',t:'"We invest time into owners"',lead:'The core promise.',facts:['Time and unbiased counsel for the person at the top.','Frames the relationship as investment, not a service transaction.'],s:'homepage'},
+ icp1:{g:'Who you serve',c:'#3b82f6',t:'CEOs & founders (growth-stage)',lead:'Your primary buyer.',facts:['Leaders who need unbiased counsel and cannot get it internally.','Growth-stage: past survival, into the hard scaling decisions.','High-value, low-volume, relationship-led — sells on trust, not volume.'],s:'homepage, /plans'},
+ icp2:{g:'Who you serve',c:'#3b82f6',t:'Investors',lead:'A second buyer, explicitly served — worth its own message.',facts:['Investors who want their portfolio CEOs supported.','A potential channel: one investor relationship = many CEO intros.'],s:'homepage (benefits)'},
+ voice:{g:'Voice',c:'#0ea5a3',t:'Voice: serious + empathetic',lead:'How you sound — professional but genuinely warm.',facts:['Frameworks language mixed with real emotional honesty.','Conversational, direct, unpretentious.','Any BDR or content agent should write exactly like this.'],s:'sampled across the site'},
+ paul:{g:'People',c:'#7c3aed',t:'Paul (founder)',lead:'The principal — and, on a trust-based service, the actual product.',facts:['An experienced founder himself; has a "Failures and Successes" download.','But nearly anonymous on-site: no full bio, credentials or track record.','This is a top-3 fix — see the action list.'],s:'homepage'},
+ naval:{g:'People',c:'#7c3aed',t:'Naval Ravikant (borrowed proof)',lead:'External authority, quoted on CEO loneliness.',facts:['Lends credibility to the wedge — but is not a client.','Underlines the proof gap: you borrow authority because you show none of your own.'],s:'homepage'},
+ f1:{g:'Fix on your site',c:'#d19a3a',t:'No client proof',lead:'The single biggest gap for a trust sale.',facts:['Zero testimonials, logos or case studies anywhere on the site.','Every visitor you already have converts worse because of it.','Cheapest, highest-leverage fix — action #1.'],s:'website audit'},
+ f2:{g:'Fix on your site',c:'#d19a3a',t:'"About" points to /plans',lead:'A trust-killer for a service where the person matters.',facts:['The About link goes to pricing, not your story or Paul.','Missed chance to build belief in you before the ask.'],s:'website audit'},
+ f3:{g:'Fix on your site',c:'#d19a3a',t:'Paul is anonymous',lead:'The person is the product, but he is hidden.',facts:['No full bio, credentials or track record on the homepage.','Surface Paul hard — it is the trust driver.'],s:'website audit'},
+ f4:{g:'Fix on your site',c:'#d19a3a',t:'Weak CTA hierarchy',lead:'No single obvious next step.',facts:['Multiple undifferentiated "Contact us" buttons.','Pick one primary action and make it unmissable.'],s:'website audit'},
+ l1:{g:'Private (locked)',c:'#cbd5e1',t:'🔒 Client outcomes & results',lead:'What actually happened for the CEOs you have mentored.',facts:['This is the exact proof your site is missing.','Unlocked by the private build — turns your work into your marketing.'],s:'requires private build'},
+ l2:{g:'Private (locked)',c:'#cbd5e1',t:'🔒 Session notes & patterns',lead:'The real IP — what recurs across engagements.',facts:['Patterns that would make every agent you hire sharper.','Private build only.'],s:'requires private build'},
+ l3:{g:'Private (locked)',c:'#cbd5e1',t:'🔒 Pricing & the model',lead:'Your plans and economics.',facts:['Enables smarter qualification and targeting for the BDR.','Private build only.'],s:'requires private build'},
+};
+const GROUPS={
+ 'Company':{color:{background:'#0055FF',border:'#0042cc'},font:{color:'#fff'}},
+ 'Offering':{color:{background:'#16A34A',border:'#12833b'},font:{color:'#fff'}},
+ 'Positioning':{color:{background:'#3355e6',border:'#0055FF'},font:{color:'#fff'}},
+ 'Who you serve':{color:{background:'#3b82f6',border:'#2f6fd6'},font:{color:'#fff'}},
+ 'Voice':{color:{background:'#0ea5a3',border:'#0b827f'},font:{color:'#fff'}},
+ 'People':{color:{background:'#7c3aed',border:'#6425c9'},font:{color:'#fff'}},
+ 'Fix on your site':{color:{background:'#e6b877',border:'#d19a3a'},font:{color:'#5b430f'}},
+ 'Private (locked)':{color:{background:'#e2e8f0',border:'#cbd5e1'},font:{color:'#64748b'},shapeProperties:{borderDashes:[4,3]}},
+};
+const NODES={
+ SL:{label:'Sectorlight',group:'Company',value:42},
+ off:{label:'Active Mentoring',group:'Offering',value:24}, fw:{label:'Frameworks',group:'Offering'}, acc:{label:'Accountability',group:'Offering'}, ai:{label:'AI Sentiment Review',group:'Offering'}, exp:{label:'Expert Program',group:'Offering'},
+ pos:{label:'Chair+Mentor+Coach',group:'Positioning',value:19}, lone:{label:'CEO loneliness',group:'Positioning',value:18}, invest:{label:'"Invest in owners"',group:'Positioning'},
+ icp1:{label:'CEOs & founders',group:'Who you serve',value:19}, icp2:{label:'Investors',group:'Who you serve'},
+ voice:{label:'Voice & tone',group:'Voice'},
+ paul:{label:'Paul (founder)',group:'People',value:19}, naval:{label:'Naval (proof)',group:'People'},
+ f1:{label:'No client proof',group:'Fix on your site'}, f2:{label:'About → /plans',group:'Fix on your site'}, f3:{label:'Paul anonymous',group:'Fix on your site'}, f4:{label:'Weak CTAs',group:'Fix on your site'},
+ l1:{label:'🔒 Client outcomes',group:'Private (locked)'}, l2:{label:'🔒 Session notes',group:'Private (locked)'}, l3:{label:'🔒 Pricing model',group:'Private (locked)'},
+};
+const EDGES=[['SL','off'],['SL','pos'],['SL','icp1'],['SL','voice'],['SL','paul'],['off','fw'],['off','acc'],['off','ai'],['off','exp'],['pos','lone'],['pos','invest'],['lone','naval'],['icp1','icp2'],['icp1','invest'],['paul','naval'],['paul','f3'],['SL','f1'],['SL','f2'],['off','f4'],['SL','l1'],['SL','l2'],['SL','l3'],['l1','f1']];
+// build waves (real-time populate)
+const WAVES=[['SL'],['off','pos','icp1','voice','paul'],['fw','acc','ai','exp','lone','invest','icp2','naval'],['f1','f2','f3','f4'],['l1','l2','l3']];
+const SCANTXT=['Reading sectorlight.co…','Mapping your offering…','Finding your positioning & people…','Spotting issues to fix…','Checking what needs your private data…'];
+let net,nds,eds,clicked=false;
+function initNet(){
+ nds=new vis.DataSet([]); eds=new vis.DataSet([]);
+ net=new vis.Network(document.getElementById('net'),{nodes:nds,edges:eds},{
+   groups:GROUPS,nodes:{shape:'dot',size:12,font:{size:13,face:'Nunito'},borderWidth:2},
+   edges:{color:{color:'#dbe2ec',highlight:'#0055FF'},width:1.5,smooth:{type:'continuous'}},
+   physics:{barnesHut:{gravitationalConstant:-4600,springLength:115,springConstant:.03},stabilization:{iterations:120}},
+   interaction:{hover:true,tooltipDelay:9e9}});
+ net.on('click',p=>{if(p.nodes.length){show(p.nodes[0]);clicked=true;document.getElementById('playhint').classList.add('hidden');}});
+}
+function progress(p){var b=document.getElementById('pbar'); if(b)b.style.width=p+'%';}
+function status(txt,pc){ if(txt!=null)document.getElementById('scantxt').textContent=txt; if(pc!=null)document.getElementById('pagecount').textContent=pc;}
+function addWave(i){
+ WAVES[i].forEach(id=>{ nds.add({id,...NODES[id]}); });
+ EDGES.forEach(e=>{ if(nds.get(e[0])&&nds.get(e[1]) && !eds.get(e[0]+'_'+e[1])){ eds.add({id:e[0]+'_'+e[1],from:e[0],to:e[1]}); }});
+ net.fit({animation:{duration:700}});
+}
+// slowed, realistic scan (~15s) so it feels like a real site being read
+function runScan(){
+ var steps=[
+  [0,    ()=>{status('Fetching sectorlight.co…','');progress(5);}],
+  [1400, ()=>{status('Reading pages…','1 / 7 pages');progress(14);}],
+  [2300, ()=>{status(null,'3 / 7 pages');progress(22);}],
+  [3300, ()=>{status('Extracting who you are…','7 / 7 pages');progress(30);addWave(0);}],
+  [5400, ()=>{status('Mapping your offering…');progress(45);addWave(1);}],
+  [7900, ()=>{status('Reading your positioning, people & voice…');progress(62);addWave(2);}],
+  [10600,()=>{status('Spotting issues on your site…');progress(80);addWave(3);}],
+  [13000,()=>{status('Checking what needs your private data…');progress(93);addWave(4);}],
+  [15200,()=>{progress(100);finishScan();}]
+ ];
+ steps.forEach(s=>setTimeout(s[1],s[0]));
+}
+function finishScan(){
+ document.querySelector('.scanline').style.display='none';
+ document.getElementById('pbarwrap').style.display='none';
+ document.getElementById('lede').style.transition='opacity .5s';document.getElementById('lede').style.opacity=1;
+ document.getElementById('actions').style.transition='opacity .6s';document.getElementById('actions').style.opacity=1;
+ if(!clicked) document.getElementById('playhint').classList.remove('hidden');
+ setTimeout(()=>{ if(!clicked) show('SL'); },500);
+}
+function show(id){
+ const d=D[id]; if(!d)return;
+ const facts=(d.facts||[]).map(f=>`<li>${f}</li>`).join('');
+ const quote=d.quote?`<div class="quote">"${d.quote}"</div>`:'';
+ document.getElementById('panel').innerHTML=`<span class="tag" style="background:${d.c}">${d.g}</span><h3>${d.t}</h3><p class="lead">${d.lead}</p>${facts?`<ul>${facts}</ul>`:''}${quote}<div class="src">Source: ${d.s}</div>`;
+}
+function startScan(){
+ document.getElementById('step1').classList.add('hidden');
+ document.getElementById('brain').classList.remove('hidden');
+ initNet();
+ setTimeout(runScan,300);
+}
+</script>
